@@ -16,6 +16,15 @@ class Phonebook extends Component {
 
     }
 
+    componentDidMount() {
+    // Retrieving data from localStorage when the component mounts
+        const storedData = localStorage.getItem('myData');
+        console.log(localStorage.getItem('myData'))
+    if (storedData) {
+      this.setState({ contacts: JSON.parse(storedData) });
+    }
+  }
+
     generateId = () => {
         const ids = this.state.contacts.map((contact) => parseInt(contact.id.split('-')[1]));
         const max = Math.max(...ids);
@@ -26,7 +35,11 @@ class Phonebook extends Component {
     }
 
     deleteContacts = (id) => {
-        this.setState((prevState)=>({contacts: prevState.contacts.filter((contact)=>contact.id!==id)}))
+        const newData = this.state.contacts.filter((contact) => contact.id !== id)
+        this.setState(
+            { contacts: newData })
+        localStorage.setItem('myData', JSON.stringify(newData));
+         console.log(localStorage.getItem('myData'))
     }
 
    nameChange = (e) => {
@@ -54,13 +67,15 @@ class Phonebook extends Component {
             name,
             number,
         }
-
-        this.setState(prevState => ({
-            contacts: [...prevState.contacts, newContact],
+        const newData = [...this.state.contacts, newContact]
+        this.setState({
+            contacts: newData,
             name: '',
             number:'',
             
-        }))
+        })
+            localStorage.setItem('myData', JSON.stringify(newData));
+             console.log(localStorage.getItem('myData'))
         }
         else {
             alert(`${name} is already in your contacts`)

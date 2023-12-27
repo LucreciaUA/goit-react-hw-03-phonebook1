@@ -36,10 +36,12 @@ class Phonebook extends Component {
 
     deleteContacts = (id) => {
         const newData = this.state.contacts.filter((contact) => contact.id !== id)
+        localStorage.setItem('myData', JSON.stringify(newData));
+        console.log(localStorage.getItem('myData'))
+       
         this.setState(
             { contacts: newData })
-        localStorage.setItem('myData', JSON.stringify(newData));
-         console.log(localStorage.getItem('myData'))
+        console.log(this.state.contacts)
     }
 
    nameChange = (e) => {
@@ -68,14 +70,16 @@ class Phonebook extends Component {
             number,
         }
         const newData = [...this.state.contacts, newContact]
-        this.setState({
-            contacts: newData,
+        
+            localStorage.setItem('myData', JSON.stringify(newData));
+            console.log('this is new data', localStorage.getItem('myData'))
+             const stateData =localStorage.getItem('myData')
+            this.setState({
+            contacts: stateData,
             name: '',
             number:'',
             
         })
-            localStorage.setItem('myData', JSON.stringify(newData));
-             console.log(localStorage.getItem('myData'))
         }
         else {
             alert(`${name} is already in your contacts`)

@@ -6,10 +6,8 @@ import { ContactList } from "./contact-list/contact-list";
 
 class Phonebook extends Component {
     state = {
-        contacts: [
-      
-  ],
-  filter: '',
+        contacts: [],
+        filter: '',
 
     }
 
@@ -73,17 +71,17 @@ class Phonebook extends Component {
     }
 
     componentDidMount() {
-        const storedContacts = localStorage.getItem('contacts');
-        if (storedContacts) {
-            this.setState({ contacts: JSON.parse(storedContacts) });
-        }
+    const contacts = localStorage.getItem('contacts');
+    const dataContacts = JSON.parse(contacts);
+    if (dataContacts) {
+      this.setState({ contacts: dataContacts });
     }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (JSON.stringify(prevState.contacts) !== JSON.stringify(this.state.contacts)) {
-            localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-        }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
     }
+  }
     
     render() {
         const { contacts, filter } = this.state;

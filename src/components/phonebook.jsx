@@ -6,28 +6,21 @@ import { ContactList } from "./contact-list/contact-list";
 
 class Phonebook extends Component {
     state = {
-        contacts: [
-        // { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-        // { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-        // { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-        // { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-        ],
+        contactss: [],
         filter: '',
-
     }
 
 
     generateId = () => {
-        const ids = this.state.contacts.map((contact) => parseInt(contact.id.split('-')[1]));
+        const ids = this.state.contactss.map((contact) => parseInt(contact.id.split('-')[1]));
         const max = Math.max(...ids);
         const newId = max + 1||1;
         const contactId = `id-${String(newId).padStart(2, '0')}`;
-        console.log(contactId)
         return contactId;
     }
 
     deleteContacts = (id) => {
-        const newData = this.state.contacts.filter((contact) => contact.id !== id)
+        const newData = this.state.contactss.filter((contact) => contact.id !== id)
   
        
         this.setState(
@@ -51,7 +44,7 @@ class Phonebook extends Component {
     addContact = (e) => {
         e.preventDefault();
         const { name, number } = this.state;
-        const isExisting = this.state.contacts.some((contact) =>
+        const isExisting = this.state.contactss.some((contact) =>
         { return (contact.name.toLowerCase() === name.toLowerCase() || contact.number === number) })
         
         if(!isExisting)
@@ -60,7 +53,7 @@ class Phonebook extends Component {
             name,
             number,
         }
-        const newData = [...this.state.contacts, newContact]
+        const newData = [...this.state.contactss, newContact]
         
 
             this.setState({
@@ -79,19 +72,19 @@ class Phonebook extends Component {
     const contacts = localStorage.getItem('contacts');
     const dataContacts = JSON.parse(contacts);
     if (dataContacts) {
-      this.setState({ contacts: dataContacts });
+      this.setState({ contactss: dataContacts });
     }
   }
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    if (this.state.contactss !== prevState.contactss) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contactss));
     }
   }
     
     render() {
-        const { contacts, filter } = this.state;
+        const { contactss, filter } = this.state;
         const searchTerm = filter.toLowerCase();
-        const filteredContacts = contacts.filter((contact) => {
+        const filteredContacts = contactss.filter((contact) => {
             return (
                 contact.name.toLowerCase().includes(searchTerm) ||
                 contact.number.includes(searchTerm)

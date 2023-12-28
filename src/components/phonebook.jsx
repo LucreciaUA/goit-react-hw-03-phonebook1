@@ -7,10 +7,7 @@ import { ContactList } from "./contact-list/contact-list";
 class Phonebook extends Component {
     state = {
         contacts: [
-      {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
-    {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
-    {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
-    {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+      
   ],
   filter: '',
 
@@ -76,17 +73,17 @@ class Phonebook extends Component {
     }
 
     componentDidMount() {
-    const storedContacts = localStorage.getItem('contacts');
-    const contacts = JSON.parse(storedContacts) ?? [];
-    this.setState({contacts});
-  }
-
-   componentDidUpdate(prevState) {
-    if (prevState.contacts !== this.state.contacts) {
-      const dataContacts = JSON.stringify(this.state.contacts)
-      localStorage.setItem('contacts', dataContacts)
+        const storedContacts = localStorage.getItem('contacts');
+        if (storedContacts) {
+            this.setState({ contacts: JSON.parse(storedContacts) });
         }
-    };
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (JSON.stringify(prevState.contacts) !== JSON.stringify(this.state.contacts)) {
+            localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+        }
+    }
     
     render() {
         const { contacts, filter } = this.state;

@@ -32,7 +32,7 @@ class Phonebook extends Component {
        
         this.setState(
             { contacts: newData })
-        console.log(this.state.contacts)
+       
     }
 
    nameChange = (e) => {
@@ -53,7 +53,7 @@ class Phonebook extends Component {
         const { name, number } = this.state;
         const isExisting = this.state.contacts.some((contact) =>
         { return (contact.name.toLowerCase() === name.toLowerCase() || contact.number === number) })
-        console.log(isExisting)
+        
         if(!isExisting)
         {const newContact = {
             id: this.generateId(),

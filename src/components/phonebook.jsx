@@ -16,14 +16,6 @@ class Phonebook extends Component {
 
     }
 
-    componentDidMount() {
-    // Retrieving data from localStorage when the component mounts
-        const storedData = localStorage.getItem('myData');
-        console.log(localStorage.getItem('myData'))
-    if (storedData) {
-      this.setState({ contacts: JSON.parse(storedData) });
-    }
-  }
 
     generateId = () => {
         const ids = this.state.contacts.map((contact) => parseInt(contact.id.split('-')[1]));
@@ -36,8 +28,7 @@ class Phonebook extends Component {
 
     deleteContacts = (id) => {
         const newData = this.state.contacts.filter((contact) => contact.id !== id)
-        localStorage.setItem('myData', JSON.stringify(newData));
-        console.log(localStorage.getItem('myData'))
+  
        
         this.setState(
             { contacts: newData })
@@ -71,11 +62,9 @@ class Phonebook extends Component {
         }
         const newData = [...this.state.contacts, newContact]
         
-            localStorage.setItem('myData', JSON.stringify(newData));
-            console.log('this is new data', localStorage.getItem('myData'))
-             const stateData =localStorage.getItem('myData')
+
             this.setState({
-            contacts: stateData,
+            contacts: newData,
             name: '',
             number:'',
             
@@ -86,7 +75,19 @@ class Phonebook extends Component {
         }
     }
 
-   
+    componentDidMount() {
+    const storedContacts = localStorage.getItem('contacts');
+    const contacts = JSON.parse(storedContacts) ?? [];
+    this.setState({contacts});
+  }
+
+   componentDidUpdate(prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      const dataContacts = JSON.stringify(this.state.contacts)
+      localStorage.setItem('contacts', dataContacts)
+        }
+    };
+    
     render() {
         const { contacts, filter } = this.state;
         const searchTerm = filter.toLowerCase();
